@@ -79,7 +79,7 @@ const DailyChart: React.FC<DailyChartProps> = ({ data }) => {
                         </linearGradient>
                     </defs>
 
-                    <Area type="monotone" dataKey="value" stroke="false" fill="url(#colorUv)" />
+                    <Area type="monotone" dataKey="value" stroke="none" fill="url(#colorUv)" />
                     <Line type="monotone" dataKey="value" stroke="#6366f1" strokeWidth={2} name="Valor" connectNulls dot={<CustomizedDot />} activeDot={{ r: 8 }} />
                     <Brush dataKey="time" height={30} stroke="#8884d8" />
                 </LineChart>
