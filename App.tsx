@@ -8,11 +8,9 @@ import DailyChart from './components/DailyChart';
 import MedicationManager from './components/MedicationManager';
 import StandardPatternManager from './components/StandardPatternManager';
 import DataManager from './components/DataManager';
-import DateRangeChart from './components/DateRangeChart';
 import { ChartIcon, CogIcon, ListIcon, LockIcon, DataIcon, CalendarIcon } from './components/Icons';
 
 type Tab = 'registro' | 'medicamentos' | 'patron' | 'datos';
-type ViewMode = 'day' | 'range';
 
 const App: React.FC = () => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -25,12 +23,7 @@ const App: React.FC = () => {
     });
 
     const [isCalendarVisible, setIsCalendarVisible] = useState(false);
-    const [viewMode, setViewMode] = useState<ViewMode>('day');
-    const today = new Date();
-    const oneWeekAgo = new Date(today);
-    oneWeekAgo.setDate(today.getDate() - 7);
-    const [dateRange, setDateRange] = useState({ start: oneWeekAgo, end: today });
-
+    
     const handleLogin = (password: string) => {
         if (password === APP_PASSWORD) {
             setIsAuthenticated(true);
@@ -101,45 +94,28 @@ const App: React.FC = () => {
                                         <span className="hidden sm:inline">Seleccionar Fecha</span>
                                     </button>
                                     <h2 className="text-xl font-semibold text-brand-dark">
-                                        {viewMode === 'day' ? `Día: ${dateString}` : 'Vista de Rango'}
+                                        Día: {dateString}
                                     </h2>
                                 </div>
-                                <div className="bg-gray-200 p-1 rounded-lg flex">
-                                    <button onClick={() => setViewMode('day')} className={`px-3 py-1 rounded-md text-sm font-semibold ${viewMode === 'day' ? 'bg-white shadow' : 'text-gray-600'}`}>Día</button>
-                                    <button onClick={() => setViewMode('range')} className={`px-3 py-1 rounded-md text-sm font-semibold ${viewMode === 'range' ? 'bg-white shadow' : 'text-gray-600'}`}>Rango</button>
-                                </div>
                             </div>
-
-                            {viewMode === 'day' ? (
-                                <>
-                                    {dailyData ? (
-                                        <DailyChart data={dailyData} />
-                                    ) : (
-                                        <div className="text-center p-8 bg-gray-50 rounded-lg">
-                                            <h3 className="text-lg font-semibold">No hay datos para {dateString}.</h3>
-                                            <p className="text-gray-600">Rellena el formulario para empezar a registrar.</p>
-                                        </div>
-                                    )}
-                                    <DataInputForm
-                                        key={dateString}
-                                        selectedDate={dateString}
-                                        dailyData={dailyData}
-                                        medications={appState.medications}
-                                        standardPattern={appState.standardPattern}
-                                        onSave={handleSaveDay}
-                                    />
-                                </>
-                            ) : (
-                                <div className="flex flex-col gap-4">
-                                     <div className="flex flex-wrap items-center justify-center gap-4 p-2 bg-gray-100 rounded-lg">
-                                        <label className="font-semibold">Desde:</label>
-                                        <input type="date" value={dateRange.start.toISOString().split('T')[0]} onChange={e => setDateRange(r => ({...r, start: new Date(e.target.value)}))} className="p-2 border rounded"/>
-                                        <label className="font-semibold">Hasta:</label>
-                                        <input type="date" value={dateRange.end.toISOString().split('T')[0]} onChange={e => setDateRange(r => ({...r, end: new Date(e.target.value)}))} className="p-2 border rounded"/>
-                                     </div>
-                                     <DateRangeChart records={appState.records} startDate={dateRange.start} endDate={dateRange.end} />
-                                </div>
-                            )}
+                            <>
+                                {dailyData ? (
+                                    <DailyChart data={dailyData} />
+                                ) : (
+                                    <div className="text-center p-8 bg-gray-50 rounded-lg">
+                                        <h3 className="text-lg font-semibold">No hay datos para {dateString}.</h3>
+                                        <p className="text-gray-600">Rellena el formulario para empezar a registrar.</p>
+                                    </div>
+                                )}
+                                <DataInputForm
+                                    key={dateString}
+                                    selectedDate={dateString}
+                                    dailyData={dailyData}
+                                    medications={appState.medications}
+                                    standardPattern={appState.standardPattern}
+                                    onSave={handleSaveDay}
+                                />
+                            </>
                         </div>
                     )}
                     {activeTab === 'medicamentos' && (
