@@ -102,7 +102,6 @@ const DataInputForm: React.FC<DataInputFormProps> = ({ selectedDate, dailyData, 
                     <div key={time} className="grid grid-cols-1 md:grid-cols-4 gap-2 items-start p-2 border-b">
                         <label className="font-semibold text-gray-700 md:text-right pr-4 self-center">{time}</label>
                         <input
-                            // Fix: The ref callback was incorrectly returning the element, causing a type error. Wrapping the assignment in curly braces ensures the callback returns void.
                             ref={el => { inputRefs.current[index] = el; }}
                             type="number"
                             min="0"
