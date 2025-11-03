@@ -1,5 +1,5 @@
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import type { DailyRecord } from '../types';
 import { TIME_SLOTS } from '../constants';
 
@@ -85,8 +85,10 @@ const DateRangeChart: React.FC<DateRangeChartProps> = ({ records, startDate, end
                     <YAxis domain={[0, 10]} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend verticalAlign="top" height={36} />
-                    {/* Fix: The stroke prop expects a string color value, not a boolean. Use "none" to disable the stroke. */}
-                    <Area type="monotone" dataKey="range" stroke="none" fill="#8884d8" opacity={0.2} name="Rango (Min-Max)" />
+                    {/* The Area component with a dataKey pointing to an array was causing a rendering error. */}
+                    {/* It's replaced by two Line components for min and max to visualize the range without crashing. */}
+                    <Line type="monotone" dataKey="max" stroke="#a7a7a7" strokeWidth={1} strokeDasharray="5 5" name="Máximo" dot={false} />
+                    <Line type="monotone" dataKey="min" stroke="#a7a7a7" strokeWidth={1} strokeDasharray="5 5" name="Mínimo" dot={false} />
                     <Line type="monotone" dataKey="avg" stroke="#8884d8" strokeWidth={2} name="Promedio" dot={false} />
                 </LineChart>
             </ResponsiveContainer>
