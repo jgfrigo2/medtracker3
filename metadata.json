@@ -1,0 +1,5 @@
+{
+  "name": "Health Tracker Diario",
+  "description": "Una aplicación para registrar y visualizar datos de salud cada media hora. Permite gestionar medicamentos, establecer patrones estándar y guardar/cargar datos localmente o a través de JSONBin.io.",
+  "requestFramePermissions": []
+}
